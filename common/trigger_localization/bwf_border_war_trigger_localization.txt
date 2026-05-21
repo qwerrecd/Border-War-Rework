@@ -1,0 +1,8 @@
+﻿bwf_border_war_protector_will_join_tt = {
+	global = bwf_border_war_protector_will_join_tt
+	global_not = bwf_border_war_protector_will_join_tt
+	first = bwf_border_war_protector_will_join_tt
+	first_not = bwf_border_war_protector_will_join_tt
+	third = bwf_border_war_protector_will_join_tt
+	third_not = bwf_border_war_protector_will_join_tt
+}

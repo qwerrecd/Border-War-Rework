@@ -1,0 +1,16 @@
+﻿bwf_declare_war_higher_protector_warning = {
+	scope = character
+	saved_scopes = {
+		attacker
+		defender
+		target
+	}
+
+	is_shown = {
+		bwf_border_war_higher_protector_will_join_trigger = yes
+	}
+
+	is_valid = {
+		bwf_border_war_higher_protector_gui_tooltip_trigger = yes
+	}
+}

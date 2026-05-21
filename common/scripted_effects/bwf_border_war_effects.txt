@@ -1,0 +1,75 @@
+﻿# on_war_started scope:
+# - scope:war
+# - scope:attacker
+# - scope:defender
+bwf_add_border_war_protector_effect = {
+	if = {
+		limit = {
+			exists = scope:war
+			exists = scope:attacker
+			exists = scope:defender
+			scope:defender.top_liege = {
+				this != scope:attacker.top_liege
+				this != scope:defender
+				can_vassals_be_attacked = yes
+			}
+			scope:war = {
+				using_civil_war_cb_trigger = no
+			}
+		}
+		scope:war = {
+			casus_belli = {
+				ordered_target_title = {
+					limit = {
+						holder ?= {
+							OR = {
+								this = scope:defender
+								is_vassal_or_below_of = scope:defender
+							}
+							any_liege_or_above = {
+								bwf_can_guarantee_border_protection_trigger = yes
+							}
+						}
+					}
+					order_by = tier
+					save_scope_as = bwf_border_war_target_title
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:bwf_border_war_target_title }
+			scope:bwf_border_war_target_title.holder = {
+				ordered_liege_or_above = {
+					limit = {
+						bwf_can_guarantee_border_protection_trigger = yes
+						NOT = {
+							any_liege_or_above = {
+								bwf_can_guarantee_border_protection_trigger = yes
+							}
+						}
+					}
+					save_scope_as = bwf_border_war_protector
+				}
+			}
+			if = {
+				limit = {
+					exists = scope:bwf_border_war_protector
+					scope:bwf_border_war_protector != scope:defender
+					scope:bwf_border_war_protector = {
+						NOT = {
+							any_character_war = {
+								this = scope:war
+							}
+						}
+					}
+				}
+				scope:war = {
+					hidden_effect = {
+						set_called_to = scope:bwf_border_war_protector
+					}
+					add_defender = scope:bwf_border_war_protector
+				}
+			}
+		}
+	}
+}

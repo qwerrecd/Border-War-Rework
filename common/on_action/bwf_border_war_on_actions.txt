@@ -1,0 +1,11 @@
+﻿on_war_started = {
+	on_actions = {
+		bwf_on_war_started
+	}
+}
+
+bwf_on_war_started = {
+	effect = {
+		bwf_add_border_war_protector_effect = yes
+	}
+}

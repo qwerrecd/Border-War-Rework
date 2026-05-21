@@ -1,0 +1,219 @@
+﻿# Root scope: character being checked as a potential protector.
+bwf_can_guarantee_border_protection_trigger = {
+	save_temporary_scope_as = bwf_protection_candidate
+	is_landed = yes
+	highest_held_title_tier >= tier_duchy
+	highest_held_title_tier < tier_hegemony
+	sub_realm_size < border_war_sized_realm_value
+	house ?= {
+		NOT = { has_house_unity_stage = antagonistic }
+	}
+	NOT = {
+		any_character_war = {
+			primary_defender = scope:bwf_protection_candidate
+			using_civil_war_cb_trigger = yes
+		}
+	}
+}
+
+# CB valid_to_start_display_regardless scope:
+# - root / scope:attacker: attacker
+# - scope:defender: selected defender
+# - scope:target: selected target title
+bwf_border_war_higher_protector_will_join_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:attacker
+			exists = scope:defender
+			exists = scope:target
+			scope:defender = { is_landed = yes }
+		}
+		scope:defender.top_liege = {
+			this != scope:attacker.top_liege
+			this != scope:defender
+			can_vassals_be_attacked = yes
+		}
+		scope:target = {
+			holder ?= {
+				OR = {
+					this = scope:defender
+					is_vassal_or_below_of = scope:defender
+				}
+				any_liege_or_above = {
+					this != scope:defender
+					bwf_can_guarantee_border_protection_trigger = yes
+					NOT = {
+						any_liege_or_above = {
+							bwf_can_guarantee_border_protection_trigger = yes
+						}
+					}
+				}
+			}
+		}
+	}
+	trigger_else = {
+		always = no
+	}
+}
+
+# Same CB scopes as bwf_border_war_higher_protector_will_join_trigger.
+# Emits the declaration-screen warning with the exact local protector as CHARACTER.
+bwf_border_war_higher_protector_warning_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:attacker
+			exists = scope:defender
+			exists = scope:target
+			scope:defender = { is_landed = yes }
+		}
+		scope:defender.top_liege = {
+			this != scope:attacker.top_liege
+			this != scope:defender
+			can_vassals_be_attacked = yes
+		}
+		scope:target = {
+			holder ?= {
+				OR = {
+					this = scope:defender
+					is_vassal_or_below_of = scope:defender
+				}
+				any_liege_or_above = {
+					this != scope:defender
+					bwf_can_guarantee_border_protection_trigger = yes
+					NOT = {
+						any_liege_or_above = {
+							bwf_can_guarantee_border_protection_trigger = yes
+						}
+					}
+					save_temporary_scope_as = bwf_expected_border_war_protector
+				}
+			}
+		}
+		custom_description = {
+			text = bwf_border_war_protector_will_join_tt
+			subject = scope:bwf_expected_border_war_protector
+			always = yes
+		}
+	}
+	trigger_else = {
+		always = no
+	}
+}
+
+# Same CB/GUI scopes as bwf_border_war_higher_protector_will_join_trigger.
+# Intentionally fails when a protector exists so ScriptedGui.BuildTooltip prints the exact named warning.
+bwf_border_war_higher_protector_gui_tooltip_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:attacker
+			exists = scope:defender
+			exists = scope:target
+			scope:defender = { is_landed = yes }
+		}
+		scope:defender.top_liege = {
+			this != scope:attacker.top_liege
+			this != scope:defender
+			can_vassals_be_attacked = yes
+		}
+		scope:target = {
+			holder ?= {
+				OR = {
+					this = scope:defender
+					is_vassal_or_below_of = scope:defender
+				}
+				any_liege_or_above = {
+					this != scope:defender
+					bwf_can_guarantee_border_protection_trigger = yes
+					NOT = {
+						any_liege_or_above = {
+							bwf_can_guarantee_border_protection_trigger = yes
+						}
+					}
+					save_temporary_scope_as = bwf_expected_border_war_protector
+				}
+			}
+		}
+		custom_description = {
+			text = bwf_border_war_protector_will_join_tt
+			subject = scope:bwf_expected_border_war_protector
+			always = no
+		}
+	}
+	trigger_else = {
+		always = yes
+	}
+}
+
+# CB valid_to_start scope:
+# - root / scope:attacker: attacker
+# - scope:defender: selected defender
+# - scope:target: selected target title
+bwf_border_war_defender_is_correct_level_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:attacker
+			exists = scope:defender
+			exists = scope:target
+			scope:defender = { is_landed = yes }
+		}
+		OR = {
+			scope:defender.top_liege = scope:attacker.top_liege
+			scope:defender.top_liege = {
+				can_vassals_be_attacked = no
+			}
+			scope:target = {
+				OR = {
+					NOT = { exists = holder }
+					holder = {
+						NOT = {
+							OR = {
+								this = scope:defender
+								is_vassal_or_below_of = scope:defender
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				scope:defender = { save_temporary_scope_as = bwf_declared_defender }
+				scope:target = { save_temporary_scope_as = bwf_target_title }
+				scope:bwf_target_title.holder = {
+					OR = {
+						AND = {
+							scope:bwf_declared_defender = {
+								bwf_can_guarantee_border_protection_trigger = yes
+							}
+							OR = {
+								this = scope:bwf_declared_defender
+								is_vassal_or_below_of = scope:bwf_declared_defender
+							}
+							NOT = {
+								any_liege_or_above = {
+									save_temporary_scope_as = bwf_candidate_protector
+									this != scope:bwf_declared_defender
+									bwf_can_guarantee_border_protection_trigger = yes
+									scope:bwf_declared_defender = {
+										any_liege_or_above = {
+											this = scope:bwf_candidate_protector
+										}
+									}
+								}
+							}
+						}
+						AND = {
+							this = scope:bwf_declared_defender
+							NOT = {
+								any_liege_or_above = {
+									bwf_can_guarantee_border_protection_trigger = yes
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	trigger_else = {
+		always = yes
+	}
+}
