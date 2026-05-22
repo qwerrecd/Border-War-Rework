@@ -1,9 +1,0 @@
-﻿# Intentionally empty.
-#
-# Early builds generated full vanilla CB overrides here to attach a declaration warning.
-# CK3 does not surface positive valid_to_start_display_regardless checks as a useful
-# non-blocking warning in the declare-war screen, and full CB overrides create needless
-# compatibility and validation noise. Runtime protection is handled by:
-# - common/on_action/bwf_border_war_on_actions.txt
-# - common/scripted_effects/bwf_border_war_effects.txt
-# - gui/interaction_declare_war.gui
