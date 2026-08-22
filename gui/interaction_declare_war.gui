@@ -1,8 +1,11 @@
 ﻿######################################################
-#################### DECLARE WAR "####################
+#################### DECLARE WAR #####################
 ######################################################
 
-# These ~50 first lines are a placeholder way to show who will defend
+# Full copy of vanilla 1.19.x gui/interaction_declare_war.gui plus ONE
+# BWF-injected widget (search for BWF-INJECT below).
+# To resync after a game patch: copy the new vanilla file over this one,
+# then re-insert the marked warning_icon block into the title-row template.
 window = {
     name = "declare_war_window"
     datacontext = "[DeclareWarInteractionWindow.GetCharacterInteractionConfirmationWindow]"
@@ -449,6 +452,7 @@ window = {
 														default_format = "#high"
 													}
 
+													### BWF-INJECT START - warning icon naming the protector who joins on war start ###
 													warning_icon = {
 														visible = "[GetScriptedGui('bwf_declare_war_higher_protector_warning').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'attacker', GetPlayer.MakeScope ).AddScope( 'defender', CharacterInteractionConfirmationWindow.GetRecipient.MakeScope ).AddScope( 'target', CasusBelliTitleItem.GetTitle.MakeScope ).End )]"
 														size = { 26 26 }
@@ -456,6 +460,7 @@ window = {
 
 														tooltip = "[GetScriptedGui('bwf_declare_war_higher_protector_warning').BuildTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'attacker', GetPlayer.MakeScope ).AddScope( 'defender', CharacterInteractionConfirmationWindow.GetRecipient.MakeScope ).AddScope( 'target', CasusBelliTitleItem.GetTitle.MakeScope ).End )]"
 													}
+													### BWF-INJECT END ###
 												}
 
 											}

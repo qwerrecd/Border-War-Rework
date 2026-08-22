@@ -1,0 +1,27 @@
+﻿### Overlord join probability (fixed point between 0 and 1)
+# This overrides vanilla's fallback value while preserving its normal tier scaling.
+# The CB AI uses this value to weight the overlord's military strength when deciding
+# whether an exposed subject is still worth attacking.
+ai_overlord_defensive_power_impact = {
+	value = 0.75
+
+	if = {
+		limit = { primary_title.tier = tier_hegemony }
+		multiply = 0
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_empire }
+		add = -0.1
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_kingdom }
+		add = -0.2
+	}
+
+	if = {
+		limit = {
+			bwf_border_war_ai_overlord_is_guaranteed_protector_trigger = yes
+		}
+		value = 1
+	}
+}

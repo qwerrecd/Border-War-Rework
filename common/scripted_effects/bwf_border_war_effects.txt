@@ -9,9 +9,7 @@ bwf_add_border_war_protector_effect = {
 			exists = scope:attacker
 			exists = scope:defender
 			scope:defender.top_liege = {
-				this != scope:attacker.top_liege
-				this != scope:defender
-				can_vassals_be_attacked = yes
+				bwf_top_liege_allows_direct_vassal_attack_trigger = yes
 			}
 			scope:war = {
 				using_civil_war_cb_trigger = no
@@ -41,12 +39,7 @@ bwf_add_border_war_protector_effect = {
 			scope:bwf_border_war_target_title.holder = {
 				ordered_liege_or_above = {
 					limit = {
-						bwf_can_guarantee_border_protection_trigger = yes
-						NOT = {
-							any_liege_or_above = {
-								bwf_can_guarantee_border_protection_trigger = yes
-							}
-						}
+						bwf_is_topmost_protection_candidate_trigger = yes
 					}
 					save_scope_as = bwf_border_war_protector
 				}

@@ -11,6 +11,8 @@
 	}
 
 	is_valid = {
-		bwf_border_war_higher_protector_gui_tooltip_trigger = yes
+		# Intentionally fails when a protector exists so BuildTooltip prints
+		# the warning trigger's satisfied custom_description naming them.
+		NOT = { bwf_border_war_higher_protector_warning_trigger = yes }
 	}
 }
